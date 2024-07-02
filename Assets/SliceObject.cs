@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using EzySlice;
 using UnityEngine.InputSystem;
+using Oculus.Interaction;
+using Oculus.Interaction.HandGrab;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class SliceObject : MonoBehaviour
 {
@@ -70,5 +73,16 @@ public class SliceObject : MonoBehaviour
         slicedObject.layer = LayerMask.NameToLayer("Sliceable");
         collider.convex = true;
         rb.AddExplosionForce(cutForce, slicedObject.transform.position, 1);
+
+
+        slicedObject.tag = "Ingredient";
+
+        slicedObject.AddComponent<Grabbable>();
+        slicedObject.AddComponent<HandGrabInteractable>();
+        slicedObject.AddComponent<PhysicsGrabbable>();
+        slicedObject.AddComponent<GrabInteractable>();
+
+        // JUST FOR HAND SIMULATOR :)
+        slicedObject.AddComponent<XRGrabInteractable>();
     }
 }
