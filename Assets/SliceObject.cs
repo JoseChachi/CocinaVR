@@ -69,6 +69,9 @@ public class SliceObject : MonoBehaviour
     public void SetupSlicedComponent(GameObject slicedObject)
     {
         Rigidbody rb = slicedObject.AddComponent<Rigidbody>();
+
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+
         MeshCollider collider = slicedObject.AddComponent<MeshCollider>();
         slicedObject.layer = LayerMask.NameToLayer("Sliceable");
         collider.convex = true;
@@ -77,12 +80,24 @@ public class SliceObject : MonoBehaviour
 
         slicedObject.tag = "Ingredient";
 
-        slicedObject.AddComponent<Grabbable>();
-        slicedObject.AddComponent<HandGrabInteractable>();
-        slicedObject.AddComponent<PhysicsGrabbable>();
-        slicedObject.AddComponent<GrabInteractable>();
+        Grabbable gr = slicedObject.AddComponent<Grabbable>();
+        gr.InjectOptionalRigidbody(rb);
 
-        // JUST FOR HAND SIMULATOR :)
+        HandGrabInteractable hgi = slicedObject.AddComponent<HandGrabInteractable>();
+        hgi.InjectOptionalPointableElement(gr);
+        hgi.InjectRigidbody(rb);
+
+        PhysicsGrabbable pg = slicedObject.AddComponent<PhysicsGrabbable>();
+        pg.InjectPointable(gr);
+        pg.InjectRigidbody(rb);
+
+        GrabInteractable gi = slicedObject.AddComponent<GrabInteractable>();
+        gi.InjectOptionalPointableElement(gr);
+        gi.InjectRigidbody(rb);
+
+
+        // JUST FOR
+        // XR SIMULATOR :)
         slicedObject.AddComponent<XRGrabInteractable>();
     }
 }
