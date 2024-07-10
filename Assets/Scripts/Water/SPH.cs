@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class SPH : MonoBehaviour
 {
-
+    
     [System.Serializable]
-    private class Particle
-    {
+    private class Particle {
         public float pressure;
         public float density;
 
@@ -42,11 +41,10 @@ public class SPH : MonoBehaviour
 
     private float time = 0f;
 
-
+    
     private List<Particle> particles = new List<Particle>();
 
-    private void OnDrawGizmos()
-    {
+    private void OnDrawGizmos() {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(Vector3.zero, boxSize);
 
@@ -55,11 +53,9 @@ public class SPH : MonoBehaviour
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireCube(spawnBoxCenter, spawnBox);
         }
-        else
-        {
+        else {
             // Show Particles
-            foreach (Particle p in particles)
-            {
+            foreach (Particle p in particles) {
 
                 // if (!p.onBoundary)
                 // Gizmos.color = Color.white;
@@ -76,19 +72,15 @@ public class SPH : MonoBehaviour
         }
     }
 
-    private void SpawnParticlesInBox()
-    {
+    private void SpawnParticlesInBox() {
         Vector3 spawnTopLeft = spawnBoxCenter - spawnBox / 2;
         int xIterations = Mathf.RoundToInt(spawnBox.x / (particleRadius * 2));
         int yIterations = Mathf.RoundToInt(spawnBox.y / (particleRadius * 2));
         int zIterations = Mathf.RoundToInt(spawnBox.z / (particleRadius * 2));
 
-        for (int x = 1; x < xIterations; x++)
-        {
-            for (int y = 1; y < yIterations; y++)
-            {
-                for (int z = 1; z < zIterations; z++)
-                {
+        for (int x = 1; x < xIterations; x++) {
+            for (int y = 1; y < yIterations; y++) {
+                for (int z = 1; z < zIterations; z++) {
 
                     Vector3 spawnPosition = spawnTopLeft + new Vector3(x * particleRadius * 2, y * particleRadius * 2, z * particleRadius * 2) + Random.onUnitSphere * particleRadius * 0.5f;
 
@@ -106,12 +98,11 @@ public class SPH : MonoBehaviour
     }
 
     // Run after accelerations have been set
-    private void MoveParticles(float timestep)
-    {
-
+    private void MoveParticles (float timestep) {
+        
         Vector3 topRight = boxSize / 2;
         Vector3 bottomLeft = -boxSize / 2;
-
+        
         for (int i = 0; i < particles.Count; i++)
         {
             Particle p = particles[i];
@@ -123,22 +114,19 @@ public class SPH : MonoBehaviour
 
             // Minimum Enforcements
 
-            if (p.position.x - particleRadius < bottomLeft.x)
-            {
+            if (p.position.x - particleRadius < bottomLeft.x) {
                 p.velocity.x *= boundDamping;
                 p.position.x = bottomLeft.x + particleRadius;
                 p.onBoundary = true;
             }
 
-            if (p.position.y - particleRadius < bottomLeft.y)
-            {
+            if (p.position.y - particleRadius < bottomLeft.y) {
                 p.velocity.y *= boundDamping;
                 p.position.y = bottomLeft.y + particleRadius;
                 p.onBoundary = true;
             }
 
-            if (p.position.z - particleRadius < bottomLeft.z)
-            {
+            if (p.position.z - particleRadius < bottomLeft.z) {
                 p.velocity.z *= boundDamping;
                 p.position.z = bottomLeft.z + particleRadius;
                 p.onBoundary = true;
@@ -146,54 +134,47 @@ public class SPH : MonoBehaviour
 
             // Maximum Enforcements
 
-            if (p.position.x + particleRadius > topRight.x)
-            {
+            if (p.position.x + particleRadius > topRight.x) {
                 p.velocity.x *= boundDamping;
                 p.position.x = topRight.x - particleRadius;
                 p.onBoundary = true;
             }
 
-            if (p.position.y + particleRadius > topRight.y)
-            {
+            if (p.position.y + particleRadius > topRight.y) {
                 p.velocity.y *= boundDamping;
                 p.position.y = topRight.y - particleRadius;
                 p.onBoundary = true;
             }
 
-            if (p.position.z + particleRadius > topRight.z)
-            {
+            if (p.position.z + particleRadius > topRight.z) {
                 p.velocity.z *= boundDamping;
                 p.position.z = topRight.z - particleRadius;
                 p.onBoundary = true;
             }
         }
     }
+    
 
-
-    private void Awake()
-    {
+    private void Awake() {
         SpawnParticlesInBox();
     }
-
+    
     [Header("Error Reduction")]
     public float scalingConstant = 0.004f;
 
-    private void ComputeDensities()
-    {
+    private void ComputeDensities() {
         // The density at any given point is simply the weighted sums of mass near it, as density is simply the 'amount of mass at a point'
 
         float scaledRadius = particleRadius * scalingConstant;
         float scaledRadiusSquared = (scaledRadius * scaledRadius);
         float weightConstant = 4 / (Mathf.PI * Mathf.Pow(scaledRadius, 8.0f));
 
-        for (int i = 0; i < particles.Count; i++)
-        {
+        for (int i = 0; i < particles.Count; i++) {
 
             Particle a = particles[i];
             a.density = 0f;
 
-            for (int j = 0; j < particles.Count; j++)
-            {
+            for (int j = 0; j < particles.Count; j++) {
                 Particle b = particles[j];
                 float distanceSquared = (b.position - a.position).sqrMagnitude;
 
@@ -207,20 +188,19 @@ public class SPH : MonoBehaviour
             a.pressure = gasConstant * (a.density - restingDensity);
         }
 
-
+        
 
     }
 
-    // Kernel by Müller et al.
+    // Kernel by MÃ¼ller et al.
     private float StdKernel(float distanceSquared)
     {
         // Doyub Kim
-        float x = 1.0f - distanceSquared / Mathf.Pow(particleRadius, 2);
-        return 315f / (64f * Mathf.PI * Mathf.Pow(particleRadius, 3)) * x * x * x;
-    }
+        float x = 1.0f - distanceSquared / Mathf.Pow(particleRadius,2);
+        return 315f / ( 64f * Mathf.PI * Mathf.Pow(particleRadius,3) ) * x * x * x;
+    } 
 
-    private void ComputeAcceleration()
-    {
+    private void ComputeAcceleration() {
 
         float scaledRadius = particleRadius * scalingConstant;
         float pressureWeightConstant = -45 / (Mathf.PI * Mathf.Pow(scaledRadius, 6));
@@ -234,7 +214,7 @@ public class SPH : MonoBehaviour
 
             Vector3 pressure = Vector3.zero;
             Vector3 visc = Vector3.zero;
-
+            
             float particleDensitySquared = a.density * a.density;
 
             for (int j = 0; j < particles.Count; j++)
@@ -242,11 +222,11 @@ public class SPH : MonoBehaviour
                 Particle b = particles[j];
 
                 if (i == j) continue;
-
+                
                 float scaledDistance = Vector3.Distance(a.position, b.position) * scalingConstant;
+                
 
-
-                if (scaledDistance < particleRadius * 2)
+                if (scaledDistance < particleRadius*2)
                 {
                     // Calculate Pressure Gradient [ the water moves from high pressure -> low pressure (affecting velocity) ]
                     float pressureScalar = (a.pressure / (Mathf.Pow(a.density, 2))) + (b.pressure / (Mathf.Pow(b.density, 2)));
@@ -263,7 +243,7 @@ public class SPH : MonoBehaviour
 
             // Vector3 gravForce = gravity * particleMass / a.density;
 
-            a.currentForce = (gravity * particleMass) + pressure + visc / a.density;
+            a.currentForce = (gravity * particleMass) + pressure + visc/a.density;
 
             // Debug.DrawRay(a.position, pressure.normalized*particleRadius, Color.yellow, Time.deltaTime);
         }
@@ -278,11 +258,10 @@ public class SPH : MonoBehaviour
     private float SpikyKernelFirstDerivative(float distance)
     {
         float x = 1.0f - distance / particleRadius;
-        return -45.0f / (Mathf.PI * Mathf.Pow(particleRadius, 4)) * x * x;
+        return -45.0f / ( Mathf.PI * Mathf.Pow(particleRadius,4) ) * x * x;
     }
 
-    private void FixedUpdate()
-    {
+    private void FixedUpdate() {
 
         // Density Solver
         ComputeDensities();
