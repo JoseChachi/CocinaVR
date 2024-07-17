@@ -1603,8 +1603,10 @@ MonoBehaviour:
   sliceableLayer:
     serializedVersion: 2
     m_Bits: 64
-  crossSectionMaterial: {fileID: 2100000, guid: adcb0e8af00847c4c95e2f68db47427b, type: 2}
-  cutForce: 1
+  crossSectionMaterialRedMeat: {fileID: 2100000, guid: adcb0e8af00847c4c95e2f68db47427b, type: 2}
+  crossSectionMaterialYellowPotato: {fileID: 2100000, guid: 44c1d38aff35bc0418ecb32c36cf5bac, type: 2}
+  crossSectionMaterialGreenLettuce: {fileID: 2100000, guid: 2c8208009c05f6f489e5dbc10245631e, type: 2}
+  cutForce: 0
 --- !u!114 &175193409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2924,7 +2926,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dcf8e769a96c4784e8f3d3efba957d0e, type: 3}
       propertyPath: m_Name
-      value: Potato1
+      value: Potato
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dcf8e769a96c4784e8f3d3efba957d0e, type: 3}
       propertyPath: m_Layer
@@ -3386,7 +3388,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 31a04ab4ab18f044e951f30917f3a621, type: 2}
     - target: {fileID: 919132149155446097, guid: dcf8e769a96c4784e8f3d3efba957d0e, type: 3}
       propertyPath: m_Name
-      value: Potato1 (2)
+      value: Lettuce
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dcf8e769a96c4784e8f3d3efba957d0e, type: 3}
       propertyPath: m_Layer
@@ -3885,7 +3887,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dcf8e769a96c4784e8f3d3efba957d0e, type: 3}
       propertyPath: m_Name
-      value: Potato1 (1)
+      value: Potato
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dcf8e769a96c4784e8f3d3efba957d0e, type: 3}
       propertyPath: m_Layer
@@ -7105,7 +7107,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5677873dea8d4874c9cee46c87569dca, type: 3}
       propertyPath: m_Name
-      value: RawMeat4
+      value: Carne
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5677873dea8d4874c9cee46c87569dca, type: 3}
       propertyPath: m_Layer

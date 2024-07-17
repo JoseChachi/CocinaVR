@@ -17,7 +17,9 @@ public class SliceObject : MonoBehaviour
     public VelocityEstimator velocityEstimator;
     public LayerMask sliceableLayer;
 
-    public Material crossSectionMaterial;
+    public Material crossSectionMaterialRedMeat;
+    public Material crossSectionMaterialYellowPotato;
+    public Material crossSectionMaterialGreenLettuce;
 
     public float cutForce = 2000;
 
@@ -51,22 +53,40 @@ public class SliceObject : MonoBehaviour
         planeNormal.Normalize();
         // SlicedHull hull = target.Slice(planeDebug.position, planeDebug.up);
         SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal);
+        
 
-        if(hull != null)
+        if (hull != null)
         {
-            GameObject upperHull = hull.CreateUpperHull(target, crossSectionMaterial);
+            string name = "Algo";
+            Material materiall = crossSectionMaterialRedMeat;
+            if (target.name == "Carne")
+            {
+                name = "Carne";
+                materiall = crossSectionMaterialRedMeat;
+            }
+            else if (target.name == "Potato")
+            {
+                name = "Potato";
+                materiall = crossSectionMaterialYellowPotato;
+            }
+            else if (target.name == "Lettuce")
+            {
+                name = "Lettuce";
+                materiall = crossSectionMaterialGreenLettuce;
+            }
 
-            SetupSlicedComponent(upperHull);
+            GameObject upperHull = hull.CreateUpperHull(target, materiall);
+            SetupSlicedComponent(upperHull, name);
 
-            GameObject loverHull = hull.CreateLowerHull(target, crossSectionMaterial);
 
-            SetupSlicedComponent(loverHull);
+            GameObject loverHull = hull.CreateLowerHull(target, materiall);
 
+            SetupSlicedComponent(loverHull, name);
             Destroy(target);
         }
     }
 
-    public void SetupSlicedComponent(GameObject slicedObject)
+    public void SetupSlicedComponent(GameObject slicedObject, string name)
     {
         Rigidbody rb = slicedObject.AddComponent<Rigidbody>();
 
@@ -79,6 +99,7 @@ public class SliceObject : MonoBehaviour
 
 
         slicedObject.tag = "Ingredient";
+        slicedObject.name = name;
 
         Grabbable gr = slicedObject.AddComponent<Grabbable>();
         gr.InjectOptionalRigidbody(rb);
