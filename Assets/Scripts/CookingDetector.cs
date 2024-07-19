@@ -13,6 +13,9 @@ public class CookingDetector : MonoBehaviour
     [SerializeField]
     public float darkenSpeed = 5f;
 
+    [SerializeField]
+    public AudioSource sound;
+
     private Renderer rend = null;
 
     private bool isColliding = false; // Flag to track collision state
@@ -53,6 +56,7 @@ public class CookingDetector : MonoBehaviour
     {
         if (collision.collider.tag == "Ingredient")
         {
+            sound.Play(0);
             rend = collision.gameObject.GetComponent<Renderer>();
             isColliding = true;
             Debug.Log("Object started colliding with DarkeningObject.");
@@ -63,6 +67,7 @@ public class CookingDetector : MonoBehaviour
     {
         if (collision.collider.tag == "Ingredient")
         {
+            sound.Pause();
             rend = null;
             isColliding = false;
             Debug.Log("Object stopped colliding with DarkeningObject.");

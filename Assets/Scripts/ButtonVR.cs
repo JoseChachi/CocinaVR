@@ -12,7 +12,7 @@ public class ButtonVR : MonoBehaviour
     public UnityEvent onPress;
     public UnityEvent onRelease;
     GameObject presser;
-    //AudioSource sound;
+    AudioSource sound;
     bool isPressed;
     public GameObject obj;
     public Transform spawn_position;
@@ -21,7 +21,7 @@ public class ButtonVR : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //sound = GetComponent<AudioSource>();
+        sound = GetComponent<AudioSource>();
         isPressed = false;
     }
 
@@ -38,7 +38,7 @@ public class ButtonVR : MonoBehaviour
             button.transform.localPosition += new Vector3 (0, -0.1f, 0);
             presser = other.gameObject;
             onPress.Invoke ();
-            //sound.Play ();
+            sound.Play (0);
             isPressed = true;
         }
     }

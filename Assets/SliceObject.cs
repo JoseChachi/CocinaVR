@@ -16,15 +16,16 @@ public class SliceObject : MonoBehaviour
     public Transform endSlicePoint;
     public VelocityEstimator velocityEstimator;
     public LayerMask sliceableLayer;
-
+    AudioSource sound;
     public Material crossSectionMaterial;
+    
 
     public float cutForce = 2000;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        sound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -63,6 +64,8 @@ public class SliceObject : MonoBehaviour
             SetupSlicedComponent(loverHull);
 
             Destroy(target);
+
+            sound.Play(0);
         }
     }
 
