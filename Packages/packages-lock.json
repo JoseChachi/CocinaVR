@@ -61,7 +61,11 @@
     },
     "com.meta.xr.sdk.interaction": {
       "version": "66.0.0",
+<<<<<<< HEAD
       "depth": 1,
+=======
+      "depth": 0,
+>>>>>>> 13a463490714526d82a248a46deb7aa5cca6a06f
       "source": "registry",
       "dependencies": {
         "com.unity.textmeshpro": "3.0.6",
@@ -71,7 +75,11 @@
     },
     "com.meta.xr.sdk.interaction.ovr": {
       "version": "66.0.0",
+<<<<<<< HEAD
       "depth": 1,
+=======
+      "depth": 0,
+>>>>>>> 13a463490714526d82a248a46deb7aa5cca6a06f
       "source": "registry",
       "dependencies": {
         "com.meta.xr.sdk.interaction": "66.0.0",
