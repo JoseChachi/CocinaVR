@@ -16,16 +16,17 @@ public class SliceObject : MonoBehaviour
     public Transform endSlicePoint;
     public VelocityEstimator velocityEstimator;
     public LayerMask sliceableLayer;
-    AudioSource sound;
-    public Material crossSectionMaterial;
-    
+
+    public Material crossSectionMaterialRedMeat;
+    public Material crossSectionMaterialYellowPotato;
+    public Material crossSectionMaterialGreenLettuce;
 
     public float cutForce = 2000;
 
     // Start is called before the first frame update
     void Start()
     {
-        sound = GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
@@ -37,7 +38,7 @@ public class SliceObject : MonoBehaviour
         // }
         bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
 
-        if(hasHit)
+        if (hasHit)
         {
             GameObject target = hit.transform.gameObject;
             Slice(target);
@@ -53,23 +54,39 @@ public class SliceObject : MonoBehaviour
         // SlicedHull hull = target.Slice(planeDebug.position, planeDebug.up);
         SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal);
 
-        if(hull != null)
+
+        if (hull != null)
         {
-            GameObject upperHull = hull.CreateUpperHull(target, crossSectionMaterial);
+            string name = "Algo";
+            Material materiall = crossSectionMaterialRedMeat;
+            if (target.name == "Carne")
+            {
+                name = "Carne";
+                materiall = crossSectionMaterialRedMeat;
+            }
+            else if (target.name == "Potato")
+            {
+                name = "Potato";
+                materiall = crossSectionMaterialYellowPotato;
+            }
+            else if (target.name == "Lettuce")
+            {
+                name = "Lettuce";
+                materiall = crossSectionMaterialGreenLettuce;
+            }
 
-            SetupSlicedComponent(upperHull);
+            GameObject upperHull = hull.CreateUpperHull(target, materiall);
+            SetupSlicedComponent(upperHull, name);
 
-            GameObject loverHull = hull.CreateLowerHull(target, crossSectionMaterial);
 
-            SetupSlicedComponent(loverHull);
+            GameObject loverHull = hull.CreateLowerHull(target, materiall);
 
+            SetupSlicedComponent(loverHull, name);
             Destroy(target);
-
-            sound.Play(0);
         }
     }
 
-    public void SetupSlicedComponent(GameObject slicedObject)
+    public void SetupSlicedComponent(GameObject slicedObject, string name)
     {
         Rigidbody rb = slicedObject.AddComponent<Rigidbody>();
 
@@ -82,6 +99,7 @@ public class SliceObject : MonoBehaviour
 
 
         slicedObject.tag = "Ingredient";
+        slicedObject.name = name;
 
         Grabbable gr = slicedObject.AddComponent<Grabbable>();
         gr.InjectOptionalRigidbody(rb);
