@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using Oculus.Interaction;
 using Oculus.Interaction.HandGrab;
 using UnityEngine.XR.Interaction.Toolkit;
+using Unity.VisualScripting;
 
 public class SliceObject : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class SliceObject : MonoBehaviour
     public Transform endSlicePoint;
     public VelocityEstimator velocityEstimator;
     public LayerMask sliceableLayer;
-
+    public AudioSource sound;
     public Material crossSectionMaterialRedMeat;
     public Material crossSectionMaterialYellowPotato;
     public Material crossSectionMaterialGreenLettuce;
@@ -26,7 +27,7 @@ public class SliceObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        sound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -83,6 +84,8 @@ public class SliceObject : MonoBehaviour
 
             SetupSlicedComponent(loverHull, name);
             Destroy(target);
+
+            sound.Play(0);
         }
     }
 
