@@ -54,7 +54,7 @@ namespace SojaExiles
 			print("you are opening the door");
 			openandclose.Play("Opening");
 			open = true;
-			yield return new WaitForSeconds(.5f);
+			yield return new WaitForSeconds(10.5f);
 		}
 
 		IEnumerator closing()
